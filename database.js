@@ -138,7 +138,48 @@ window.onclick = function(event) {
 }
 
 
-/* [SEZIONE 6: AVVIO]
+/* [SEZIONE 6: VISUALIZZATORE CODICE (NUOVO)]
+   Questa funzione permette di vedere il codice sorgente dentro la pagina stessa.
+   È la parte di "metacognizione".
+*/
+function viewSource(fileType) {
+    // Chiudiamo il modale tecnico per evitare sovrapposizioni
+    closeModal('techModal');
+    
+    // Apriamo il modale del visualizzatore codice
+    openModal('codeViewerModal');
+    
+    const displayArea = document.getElementById('codeDisplayArea');
+    const titleArea = document.getElementById('codeTitle');
+
+    if (fileType === 'html') {
+        titleArea.innerText = "📄 Codice Sorgente HTML (index.html)";
+        // document.documentElement.outerHTML prende tutto l'HTML attuale della pagina
+        // .replace serve a convertire i simboli < e > per poterli leggere come testo
+        const htmlCode = document.documentElement.outerHTML;
+        displayArea.innerText = htmlCode;
+    
+    } else if (fileType === 'js') {
+        titleArea.innerText = "⚙️ Codice Sorgente JavaScript (database.js)";
+        
+        // Tenta di scaricare il file .js stesso per leggerlo
+        fetch('database.js')
+            .then(response => response.text())
+            .then(text => {
+                displayArea.innerText = text;
+            })
+            .catch(error => {
+                // Se siamo in locale (file://) il browser potrebbe bloccare la lettura per sicurezza
+                displayArea.innerText = "⚠️ AVVISO DI SICUREZZA BROWSER:\n\n" +
+                "Il browser sta bloccando la lettura del file database.js perché non stai usando un Server Web.\n" +
+                "Se hai aperto il file cliccandoci sopra due volte, questa protezione è normale.\n\n" +
+                "Per vedere questo codice, apri il file 'database.js' con il Blocco Note.";
+            });
+    }
+}
+
+
+/* [SEZIONE 7: AVVIO]
     Lancia l'applicazione al caricamento pagina.
 */
 renderApp(aforismiDatabase);
