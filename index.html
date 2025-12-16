@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="it">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,37 +9,34 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     
     <style>
-        /* --- CSS BASE --- */
+        /* Variabili per gestione colori centralizzata */
         :root {
             --primary: #064e3b; --accent: #d97706; --bg: #f3f4f6;
             --card-bg: #ffffff; --note-bg: #fffbeb;
         }
         body { font-family: 'Inter', sans-serif; background: var(--bg); margin: 0; color: #1f2937; }
 
-        /* HEADER E NAVIGAZIONE */
+        /* Header e Bottoni */
         header { background: var(--primary); color: white; padding: 2rem; text-align: center; border-bottom: 5px solid var(--accent); }
         header h1 { font-family: 'Playfair Display', serif; margin: 0; }
         
-        /* GRUPPO BOTTONI MANUALI */
         .button-group { margin-top: 15px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
-        
         .tech-btn {
             background: rgba(255,255,255,0.1); border: 1px solid white; color: white;
             padding: 8px 16px; border-radius: 20px; cursor: pointer;
-            font-weight: 600; font-size: 0.85rem; transition: 0.3s; display: flex; align-items: center; gap: 5px;
+            font-weight: 600; font-size: 0.85rem; transition: 0.3s;
         }
         .tech-btn:hover { background: white; color: var(--primary); }
 
-        /* LAYOUT PRINCIPALE */
+        /* Layout principale */
         #searchContainer { text-align: center; margin: 2rem 0; }
         #searchBar {
             padding: 1rem; width: 80%; max-width: 500px;
             border-radius: 30px; border: 1px solid #ccc; font-size: 1rem;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
         .container { max-width: 800px; margin: 0 auto 50px; padding: 0 1rem; }
 
-        /* STILE CARD */
+        /* Stile Card (Scheda Aforisma) */
         .card {
             background: var(--card-bg); border-radius: 8px; padding: 1.5rem;
             margin-bottom: 1.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -53,12 +51,14 @@
             font-size: 1.2rem; display: flex; align-items: center; justify-content: center;
         }
         .btn-audio:hover { background: var(--primary); color: white; }
+        
+        /* Effetto Active Recall (Sfocatura) */
         .blur-text { filter: blur(4px); transition: 0.3s; cursor: help; }
         .blur-text:hover { filter: blur(0); color: black; }
+        
         .grammar-box { margin-top: 1rem; background: var(--note-bg); padding: 1rem; border-radius: 6px; font-size: 0.9rem; border: 1px solid #fcd34d; }
-        .grammar-title { font-weight: bold; color: var(--accent); }
 
-        /* --- STILE MODALI (Manuali) --- */
+        /* Stile Modali (Finestre Manuali) */
         .modal-overlay {
             display: none; position: fixed; top: 0; left: 0;
             width: 100%; height: 100%; background: rgba(0,0,0,0.8);
@@ -73,20 +73,16 @@
             position: absolute; top: 10px; right: 15px; font-size: 2rem;
             cursor: pointer; color: #999; line-height: 1;
         }
-        
-        /* Titoli sezioni interne ai manuali */
+
+        /* Stile Didattico per i Manuali */
         h3.section-header { 
             border-bottom: 2px solid var(--primary); color: var(--primary); 
             padding-bottom: 5px; margin-top: 2rem; font-size: 1.2rem;
         }
-
-        /* Stile Albero e Codice */
         .project-tree {
             background: #1e293b; color: #bef264; padding: 1rem; border-radius: 6px;
             font-family: monospace; white-space: pre; font-size: 0.9rem; overflow-x: auto;
-            border: 2px solid #334155;
         }
-        
         .concept-block { margin-bottom: 1.5rem; }
         .concept-title { color: var(--accent); font-weight: bold; font-size: 1rem; display: block; margin-bottom: 0.3rem; }
         .code-snippet {
@@ -95,7 +91,8 @@
             border-left: 4px solid var(--primary);
         }
     </style>
-</head>
+    </head>
+
 <body>
 
     <header>
@@ -108,12 +105,15 @@
         </div>
     </header>
 
+
     <div id="searchContainer">
         <input type="text" id="searchBar" placeholder="🔍 Cerca (es. Truth, Life, Verità...)">
     </div>
 
+
     <div class="container" id="app-root">
         </div>
+
 
     <div id="techModal" class="modal-overlay">
         <div class="modal-content">
@@ -121,62 +121,45 @@
             <h2 style="color: var(--primary); margin-top: 0;">📂 Architettura del Sistema</h2>
             
             <p><strong>1. Schema Logico del Progetto (Mappa):</strong></p>
-            <p style="font-size: 0.9rem; color: #666;">Visualizza come i file sono collegati tra loro.</p>
-            
             <div class="project-tree">
 /Wilde_UDA_Project
 │
 ├── 📄 index.html  (FRONTEND - VISTA)
-│   ├── [Input: searchBar]   -> Punto di ingresso dati (Tastiera)
-│   └── [Div: app-root]      -> Output dinamico (Schermo)
+│   ├── [Input: searchBar]   -> Punto di ingresso dati
+│   └── [Div: app-root]      -> Output dinamico
 │
 └── ⚙️ database.js (BACKEND - LOGICA)
-    ├── [Array: JSON]        -> Simulazione Database Dati
+    ├── [Array: JSON]        -> Simulazione Database
     ├── [Func: renderApp]    -> Motore Grafico
     └── [Func: EventListener]-> Motore di Ricerca
             </div>
 
-            <h3 class="section-header">2. Approfondimento Concetti & Codice</h3>
+            <h3 class="section-header">2. Concetti Chiave & Esempi</h3>
 
             <div class="concept-block">
-                <span class="concept-title">A. Separation of Concerns (Separazione delle Responsabilità)</span>
-                <p>Non mischiamo struttura e logica. L'HTML fa lo scheletro, il JS fa il cervello.</p>
+                <span class="concept-title">A. Separation of Concerns</span>
+                <p>Principio per cui separiamo la struttura (HTML) dalla logica (JS).</p>
                 <div class="code-snippet">
-HTML: &lt;div id="app"&gt;&lt;/div&gt; (Contenitore vuoto)<br>
-JS:   renderApp() (Funzione che riempie il contenitore)
+HTML: &lt;div id="app"&gt;&lt;/div&gt; (Contenitore statico)<br>
+JS:   renderApp() (Riempie il contenitore coi dati)
                 </div>
             </div>
 
             <div class="concept-block">
                 <span class="concept-title">B. Event Listener (Ascolto Eventi)</span>
-                <p>Il software "dorme" finché non succede qualcosa (es. tasto premuto).</p>
+                <p>Il codice che "ascolta" le azioni dell'utente (click, tastiera).</p>
                 <div class="code-snippet">
-// Ascolta il rilascio del tasto (keyup)<br>
 input.addEventListener('keyup', (e) => { ... });
                 </div>
             </div>
 
             <div class="concept-block">
-                <span class="concept-title">C. DOM Manipulation (Manipolazione Oggetti)</span>
-                <p>La capacità di JavaScript di modificare l'HTML "al volo" senza ricaricare la pagina.</p>
-                <div class="code-snippet">
-// Inietta nuovo HTML nella pagina<br>
-root.innerHTML = '&lt;div class="card"&gt;...&lt;/div&gt;';
-                </div>
-            </div>
-
-            <div class="concept-block">
-                <span class="concept-title">D. Reazione DOM (Ciclo di Vita)</span>
-                <p>La sequenza di azioni che avviene in millesimi di secondo:</p>
-                <ol style="font-size: 0.9rem; padding-left: 20px;">
-                    <li><strong>INPUT:</strong> L'utente scrive una lettera.</li>
-                    <li><strong>CLEAR:</strong> JS pulisce lo schermo (<code>root.innerHTML = ''</code>).</li>
-                    <li><strong>FILTER:</strong> JS setaccia il database cercando la parola.</li>
-                    <li><strong>RENDER:</strong> JS disegna solo i risultati trovati.</li>
-                </ol>
+                <span class="concept-title">C. Reazione DOM (Ciclo)</span>
+                <p>Input Utente -> Pulizia Schermo -> Filtro Dati -> Disegno Nuovi Dati.</p>
             </div>
         </div>
     </div>
+
 
     <div id="htmlModal" class="modal-overlay">
         <div class="modal-content">
@@ -186,17 +169,9 @@ root.innerHTML = '&lt;div class="card"&gt;...&lt;/div&gt;';
             
             <div class="concept-block">
                 <span class="concept-title">&lt;div&gt; (Division)</span>
-                <p>Un contenitore generico ("scatola"). Usato per creare le schede (Cards).</p>
+                <p>Un contenitore generico ("scatola"). Usato per raggruppare elementi.</p>
                 <div class="code-snippet">
 &lt;div class="card"&gt; Contenuto... &lt;/div&gt;
-                </div>
-            </div>
-
-            <div class="concept-block">
-                <span class="concept-title">&lt;span&gt;</span>
-                <p>Contenitore per testi brevi sulla stessa riga (es. categoria).</p>
-                <div class="code-snippet">
-&lt;span class="source"&gt;De Profundis&lt;/span&gt;
                 </div>
             </div>
 
@@ -210,7 +185,7 @@ root.innerHTML = '&lt;div class="card"&gt;...&lt;/div&gt;';
 
             <div class="concept-block">
                 <span class="concept-title">&lt;button&gt;</span>
-                <p>Pulsante cliccabile che lancia un'azione (Audio).</p>
+                <p>Pulsante cliccabile che lancia un'azione JS.</p>
                 <div class="code-snippet">
 &lt;button onclick="speak()"&gt;🔊&lt;/button&gt;
                 </div>
@@ -218,31 +193,23 @@ root.innerHTML = '&lt;div class="card"&gt;...&lt;/div&gt;';
 
             <div class="concept-block">
                 <span class="concept-title">id="..." (Identificatore)</span>
-                <p>Nome univoco per trovare un elemento col JS.</p>
+                <p>Nome univoco per trovare un elemento specifico col JS.</p>
                 <div class="code-snippet">
 &lt;div id="app-root"&gt; ... &lt;/div&gt;
                 </div>
             </div>
 
             <div class="concept-block">
-                <span class="concept-title">class="..." (Classe)</span>
-                <p>Nome di gruppo per dare lo stesso stile grafico a più elementi.</p>
-                <div class="code-snippet">
-&lt;div class="card"&gt;...&lt;/div&gt;
-                </div>
-            </div>
-
-            <div class="concept-block">
                 <span class="concept-title">&lt;script&gt;</span>
-                <p>Il "cervello". Collega il file HTML alla logica JS.</p>
+                <p>Collega il file HTML alla logica JS.</p>
                 <div class="code-snippet">
 &lt;script src="database.js"&gt;&lt;/script&gt;
                 </div>
             </div>
-
         </div>
     </div>
 
     <script src="database.js"></script>
+
 </body>
 </html>
