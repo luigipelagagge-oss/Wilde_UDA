@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="it">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,71 +8,57 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
     
     <style>
-        /* Variabili Globali per la coerenza dei colori */
+        /* --- CSS BASE --- */
         :root {
-            --primary: #064e3b; /* Verde Smeraldo */
-            --accent: #d97706;  /* Oro */
-            --bg: #f3f4f6;
-            --card-bg: #ffffff;
-            --note-bg: #fffbeb;
+            --primary: #064e3b; --accent: #d97706; --bg: #f3f4f6;
+            --card-bg: #ffffff; --note-bg: #fffbeb;
         }
-
         body { font-family: 'Inter', sans-serif; background: var(--bg); margin: 0; color: #1f2937; }
 
-        /* Stile Header e Titoli */
+        /* HEADER E NAVIGAZIONE */
         header { background: var(--primary); color: white; padding: 2rem; text-align: center; border-bottom: 5px solid var(--accent); }
         header h1 { font-family: 'Playfair Display', serif; margin: 0; }
-        header p { opacity: 0.8; font-size: 0.9rem; margin-top: 5px; }
+        
+        /* GRUPPO BOTTONI MANUALI */
+        .button-group { margin-top: 15px; display: flex; justify-content: center; gap: 10px; flex-wrap: wrap; }
+        
+        .tech-btn {
+            background: rgba(255,255,255,0.1); border: 1px solid white; color: white;
+            padding: 8px 16px; border-radius: 20px; cursor: pointer;
+            font-weight: 600; font-size: 0.85rem; transition: 0.3s; display: flex; align-items: center; gap: 5px;
+        }
+        .tech-btn:hover { background: white; color: var(--primary); }
 
-        /* Stile Input Ricerca */
+        /* LAYOUT PRINCIPALE */
         #searchContainer { text-align: center; margin: 2rem 0; }
         #searchBar {
             padding: 1rem; width: 80%; max-width: 500px;
             border-radius: 30px; border: 1px solid #ccc; font-size: 1rem;
             box-shadow: 0 2px 5px rgba(0,0,0,0.05);
         }
-
-        /* Stile Contenitore Cards */
         .container { max-width: 800px; margin: 0 auto 50px; padding: 0 1rem; }
 
-        /* Stile della singola Scheda (Card) */
+        /* STILE CARD */
         .card {
             background: var(--card-bg); border-radius: 8px; padding: 1.5rem;
             margin-bottom: 1.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             border-left: 5px solid var(--accent);
         }
-        .source-tag { 
-            font-size: 0.75rem; text-transform: uppercase; letter-spacing: 1px; color: #6b7280; 
-            background: #e5e7eb; padding: 2px 8px; border-radius: 4px;
-        }
+        .source-tag { font-size: 0.75rem; text-transform: uppercase; background: #e5e7eb; padding: 2px 8px; border-radius: 4px; color: #6b7280; }
         .english-row { display: flex; align-items: center; justify-content: space-between; margin: 1rem 0; }
         .quote-en { font-family: 'Playfair Display', serif; font-size: 1.4rem; color: var(--primary); font-weight: bold; }
-        
         .btn-audio {
             background: none; border: 2px solid var(--primary); color: var(--primary);
             width: 40px; height: 40px; border-radius: 50%; cursor: pointer;
-            font-size: 1.2rem; transition: 0.2s; display: flex; align-items: center; justify-content: center;
+            font-size: 1.2rem; display: flex; align-items: center; justify-content: center;
         }
         .btn-audio:hover { background: var(--primary); color: white; }
-
-        .translation-row { border-top: 1px solid #e5e7eb; padding-top: 1rem; color: #4b5563; }
         .blur-text { filter: blur(4px); transition: 0.3s; cursor: help; }
         .blur-text:hover { filter: blur(0); color: black; }
+        .grammar-box { margin-top: 1rem; background: var(--note-bg); padding: 1rem; border-radius: 6px; font-size: 0.9rem; border: 1px solid #fcd34d; }
+        .grammar-title { font-weight: bold; color: var(--accent); }
 
-        .grammar-box {
-            margin-top: 1rem; background: var(--note-bg); padding: 1rem; 
-            border-radius: 6px; font-size: 0.9rem; border: 1px solid #fcd34d;
-        }
-        .grammar-title { font-weight: bold; color: var(--accent); display: block; margin-bottom: 0.5rem; }
-
-        /* Stile Modale Manuale Tecnico */
-        .tech-btn {
-            background: transparent; border: 1px solid white; color: white;
-            padding: 8px 16px; border-radius: 20px; cursor: pointer;
-            font-weight: 600; margin-top: 15px; font-size: 0.8rem;
-        }
-        .tech-btn:hover { background: rgba(255,255,255,0.2); }
-
+        /* --- STILE MODALI (Manuali) --- */
         .modal-overlay {
             display: none; position: fixed; top: 0; left: 0;
             width: 100%; height: 100%; background: rgba(0,0,0,0.8);
@@ -81,64 +66,121 @@
         }
         .modal-content {
             background: white; padding: 2rem; border-radius: 12px;
-            width: 90%; max-width: 650px; max-height: 85vh; overflow-y: auto;
+            width: 90%; max-width: 700px; max-height: 85vh; overflow-y: auto;
             position: relative; font-family: 'Inter', sans-serif;
         }
         .close-modal {
             position: absolute; top: 10px; right: 15px; font-size: 2rem;
             cursor: pointer; color: #999; line-height: 1;
         }
+        
+        /* Stile specifico per il manuale HTML (Tabella) */
+        .doc-table { width: 100%; border-collapse: collapse; margin-top: 1rem; font-size: 0.9rem; }
+        .doc-table th, .doc-table td { border: 1px solid #e5e7eb; padding: 10px; text-align: left; }
+        .doc-table th { background-color: var(--primary); color: white; }
+        .tag-code { font-family: monospace; background: #f3f4f6; padding: 2px 6px; border-radius: 4px; color: #d97706; font-weight: bold; }
+        
+        /* Stile specifico per l'albero tecnico */
         .project-tree {
             background: #1e293b; color: #bef264; padding: 1rem; border-radius: 6px;
             font-family: monospace; white-space: pre; font-size: 0.9rem; overflow-x: auto;
-            margin-bottom: 1.5rem;
         }
-        .checklist li { margin-bottom: 8px; list-style-type: none; }
-        .checklist li::before { content: "✅ "; }
     </style>
-    </head>
+</head>
 <body>
 
     <header>
         <h1>The Wilde Project</h1>
         <p>UDA: English Literature & Information Systems</p>
-        <button class="tech-btn" onclick="toggleModal()">🛠 Visualizza Struttura Tecnica</button>
+        
+        <div class="button-group">
+            <button class="tech-btn" onclick="openModal('techModal')">🛠 Struttura Tecnica</button>
+            <button class="tech-btn" onclick="openModal('htmlModal')">📚 Guida Comandi HTML</button>
+        </div>
     </header>
+
     <div id="searchContainer">
         <input type="text" id="searchBar" placeholder="🔍 Cerca (es. Truth, Life, Verità...)">
     </div>
+
     <div class="container" id="app-root">
         </div>
+
     <div id="techModal" class="modal-overlay">
         <div class="modal-content">
-            <span class="close-modal" onclick="toggleModal()">&times;</span>
+            <span class="close-modal" onclick="closeModal('techModal')">&times;</span>
+            <h2 style="color: var(--primary);">📂 Documentazione Tecnica (Sistemi)</h2>
             
-            <h2 style="color: var(--primary); margin-top:0;">📂 Documentazione UDA</h2>
-            <p><strong>Albero del Progetto (Project Tree):</strong></p>
-
+            <p><strong>Architettura del Progetto (Project Tree):</strong></p>
             <div class="project-tree">
 /Wilde_UDA_Project
 │
-├── 📄 index.html  (VISTA - FRONTEND)
-│   ├── [Input: searchBar]   -> Filtro utente
-│   └── [Div: app-root]      -> Contenitore dinamico
+├── 📄 index.html  (FRONTEND)
+│   ├── [Input: searchBar]   -> Punto di ingresso dati
+│   └── [Div: app-root]      -> Output dinamico
 │
-└── ⚙️ database.js (LOGICA - BACKEND)
-    ├── [Array: Dati]        -> JSON Database
-    ├── [Func: renderApp]    -> Generatore HTML
-    ├── [Func: speak]        -> Sintesi Vocale
-    └── [Func: toggleModal]  -> Gestione Finestre
+└── ⚙️ database.js (BACKEND LOGIC)
+    ├── [Array: JSON]        -> Simulazione Database
+    ├── [Func: renderApp]    -> Creazione DOM (Ciclo)
+    └── [Func: EventListener]-> Logica di Ricerca
             </div>
 
-            <h3 style="color: var(--accent);">📋 Checklist Funzionale</h3>
-            <ul class="checklist">
-                <li><strong>Struttura Separata:</strong> HTML per la grafica, JS per i dati.</li>
-                <li><strong>Event Driven:</strong> La ricerca filtra i dati in tempo reale (keyup).</li>
-                <li><strong>API Esterne:</strong> Utilizzo di <code>SpeechSynthesis</code> per l'audio.</li>
-                <li><strong>Interazione:</strong> Sistema di Active Recall (sfocatura testo).</li>
+            <h3>Checklist Funzionale</h3>
+            <ul style="line-height: 1.6;">
+                <li>✅ <strong>Separation of Concerns:</strong> Dati (JS) separati dalla Grafica (HTML/CSS).</li>
+                <li>✅ <strong>Event Loop:</strong> Il sistema reagisce solo quando l'utente digita (keyup).</li>
+                <li>✅ <strong>DOM Manipulation:</strong> L'HTML non è statico ma viene riscritto in tempo reale.</li>
             </ul>
         </div>
     </div>
+
+    <div id="htmlModal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal('htmlModal')">&times;</span>
+            <h2 style="color: var(--accent);">📚 Guida ai Tag HTML (Coding)</h2>
+            <p>Sintesi dei comandi utilizzati in questo progetto:</p>
+            
+            <table class="doc-table">
+                <thead>
+                    <tr>
+                        <th>Tag / Attributo</th>
+                        <th>Descrizione e Utilizzo</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="tag-code">&lt;div&gt;</span></td>
+                        <td><strong>Division:</strong> Un contenitore generico ("scatola"). Usato per creare le schede (Cards) e raggruppare elementi.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tag-code">&lt;span&gt;</span></td>
+                        <td>Contenitore per testi brevi o parole singole. Usato qui per colorare le categorie o nascondere la traduzione.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tag-code">&lt;input&gt;</span></td>
+                        <td>Campo di inserimento dati. È la nostra <strong>Barra di Ricerca</strong>. L'attributo <code>placeholder</code> mostra il testo di suggerimento.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tag-code">&lt;button&gt;</span></td>
+                        <td>Pulsante cliccabile. Usa l'attributo <code>onclick</code> per lanciare comandi JavaScript (es. l'audio).</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tag-code">&lt;script&gt;</span></td>
+                        <td>Il "cervello". Collega il file HTML al file <code>database.js</code> permettendo la logica.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tag-code">id="..."</span></td>
+                        <td><strong>Identificatore Univoco:</strong> Un nome unico dato a un elemento (es. <code>id="searchBar"</code>) per trovarlo col JavaScript.</td>
+                    </tr>
+                    <tr>
+                        <td><span class="tag-code">class="..."</span></td>
+                        <td><strong>Classe:</strong> Un nome di gruppo (es. <code>class="card"</code>) per dare lo stesso stile grafico a molti elementi diversi.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
     <script src="database.js"></script>
-    </body>
+</body>
 </html>
