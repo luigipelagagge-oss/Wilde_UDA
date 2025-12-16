@@ -38,7 +38,7 @@
         }
         .container { max-width: 800px; margin: 0 auto 50px; padding: 0 1rem; }
 
-        /* STILE CARD AFORISMA */
+        /* STILE CARD */
         .card {
             background: var(--card-bg); border-radius: 8px; padding: 1.5rem;
             margin-bottom: 1.5rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -74,19 +74,25 @@
             cursor: pointer; color: #999; line-height: 1;
         }
         
-        /* Stile specifico per i blocchi di spiegazione */
-        .concept-block {
-            border-bottom: 1px solid #eee; padding-bottom: 1.5rem; margin-bottom: 1.5rem;
+        /* Titoli sezioni interne ai manuali */
+        h3.section-header { 
+            border-bottom: 2px solid var(--primary); color: var(--primary); 
+            padding-bottom: 5px; margin-top: 2rem; font-size: 1.2rem;
         }
-        .concept-title { color: var(--primary); font-weight: bold; font-size: 1.1rem; display: block; margin-bottom: 0.5rem; }
-        .code-snippet {
-            background: #1e293b; color: #bef264; padding: 10px; border-radius: 6px;
-            font-family: monospace; font-size: 0.85rem; overflow-x: auto; margin-top: 10px;
-            border-left: 4px solid var(--accent);
-        }
+
+        /* Stile Albero e Codice */
         .project-tree {
-            background: #1e293b; color: white; padding: 1rem; border-radius: 6px;
+            background: #1e293b; color: #bef264; padding: 1rem; border-radius: 6px;
             font-family: monospace; white-space: pre; font-size: 0.9rem; overflow-x: auto;
+            border: 2px solid #334155;
+        }
+        
+        .concept-block { margin-bottom: 1.5rem; }
+        .concept-title { color: var(--accent); font-weight: bold; font-size: 1rem; display: block; margin-bottom: 0.3rem; }
+        .code-snippet {
+            background: #f1f5f9; color: #334155; padding: 10px; border-radius: 4px;
+            font-family: monospace; font-size: 0.85rem; overflow-x: auto; margin-top: 5px;
+            border-left: 4px solid var(--primary);
         }
     </style>
 </head>
@@ -112,116 +118,123 @@
     <div id="techModal" class="modal-overlay">
         <div class="modal-content">
             <span class="close-modal" onclick="closeModal('techModal')">&times;</span>
-            <h2 style="color: var(--primary);">📂 Glossario Sistemistico</h2>
-            <p>I concetti chiave dell'architettura software di questo progetto:</p>
+            <h2 style="color: var(--primary); margin-top: 0;">📂 Architettura del Sistema</h2>
             
+            <p><strong>1. Schema Logico del Progetto (Mappa):</strong></p>
+            <p style="font-size: 0.9rem; color: #666;">Visualizza come i file sono collegati tra loro.</p>
+            
+            <div class="project-tree">
+/Wilde_UDA_Project
+│
+├── 📄 index.html  (FRONTEND - VISTA)
+│   ├── [Input: searchBar]   -> Punto di ingresso dati (Tastiera)
+│   └── [Div: app-root]      -> Output dinamico (Schermo)
+│
+└── ⚙️ database.js (BACKEND - LOGICA)
+    ├── [Array: JSON]        -> Simulazione Database Dati
+    ├── [Func: renderApp]    -> Motore Grafico
+    └── [Func: EventListener]-> Motore di Ricerca
+            </div>
+
+            <h3 class="section-header">2. Approfondimento Concetti & Codice</h3>
+
             <div class="concept-block">
-                <span class="concept-title">1. Separation of Concerns (Separazione delle Responsabilità)</span>
-                <p>Principio fondamentale dell'informatica. Non mischiamo struttura e logica. 
-                <strong>HTML</strong> fa lo scheletro, <strong>CSS</strong> il vestito, <strong>JS</strong> il cervello. 
-                Questo rende il codice pulito e facile da correggere.</p>
+                <span class="concept-title">A. Separation of Concerns (Separazione delle Responsabilità)</span>
+                <p>Non mischiamo struttura e logica. L'HTML fa lo scheletro, il JS fa il cervello.</p>
                 <div class="code-snippet">
-index.html -> Solo contenitori vuoti (&lt;div id="app"&gt;)<br>
-database.js -> Solo dati e funzioni
+HTML: &lt;div id="app"&gt;&lt;/div&gt; (Contenitore vuoto)<br>
+JS:   renderApp() (Funzione che riempie il contenitore)
                 </div>
             </div>
 
             <div class="concept-block">
-                <span class="concept-title">2. Event Listener (Ascoltatore di Eventi)</span>
-                <p>È l'orecchio del programma. Il software "dorme" finché non succede qualcosa (un click, un tasto premuto).
-                In questo progetto ascoltiamo l'evento <code>keyup</code> (tasto rilasciato) sulla barra di ricerca.</p>
+                <span class="concept-title">B. Event Listener (Ascolto Eventi)</span>
+                <p>Il software "dorme" finché non succede qualcosa (es. tasto premuto).</p>
                 <div class="code-snippet">
-// Esempio: Quando l'utente lascia un tasto, avvia la ricerca<br>
-searchInput.addEventListener('keyup', (evento) => { ... });
+// Ascolta il rilascio del tasto (keyup)<br>
+input.addEventListener('keyup', (e) => { ... });
                 </div>
             </div>
 
             <div class="concept-block">
-                <span class="concept-title">3. DOM Manipulation (Manipolazione del DOM)</span>
-                <p>La capacità di JavaScript di modificare l'HTML "al volo".
-                Non ricarichiamo la pagina per mostrare i risultati della ricerca; la modifichiamo direttamente cancellando e ricreando le schede.</p>
+                <span class="concept-title">C. DOM Manipulation (Manipolazione Oggetti)</span>
+                <p>La capacità di JavaScript di modificare l'HTML "al volo" senza ricaricare la pagina.</p>
                 <div class="code-snippet">
-// Esempio: Inietta HTML dentro la pagina<br>
+// Inietta nuovo HTML nella pagina<br>
 root.innerHTML = '&lt;div class="card"&gt;...&lt;/div&gt;';
                 </div>
             </div>
 
             <div class="concept-block">
-                <span class="concept-title">4. Reazione DOM (Ciclo di Rendering)</span>
-                <p>Il ciclo continuo che avviene ogni volta che filtriamo i dati:</p>
+                <span class="concept-title">D. Reazione DOM (Ciclo di Vita)</span>
+                <p>La sequenza di azioni che avviene in millesimi di secondo:</p>
                 <ol style="font-size: 0.9rem; padding-left: 20px;">
-                    <li><strong>Input:</strong> L'utente scrive.</li>
-                    <li><strong>Clear:</strong> Il JS pulisce lo schermo (<code>innerHTML = ''</code>).</li>
-                    <li><strong>Filter:</strong> Il JS seleziona solo i dati giusti.</li>
-                    <li><strong>Render:</strong> Il JS disegna le nuove schede.</li>
+                    <li><strong>INPUT:</strong> L'utente scrive una lettera.</li>
+                    <li><strong>CLEAR:</strong> JS pulisce lo schermo (<code>root.innerHTML = ''</code>).</li>
+                    <li><strong>FILTER:</strong> JS setaccia il database cercando la parola.</li>
+                    <li><strong>RENDER:</strong> JS disegna solo i risultati trovati.</li>
                 </ol>
             </div>
-
         </div>
     </div>
 
     <div id="htmlModal" class="modal-overlay">
         <div class="modal-content">
             <span class="close-modal" onclick="closeModal('htmlModal')">&times;</span>
-            <h2 style="color: var(--accent);">📚 Guida ai Tag HTML</h2>
+            <h2 style="color: var(--accent); margin-top: 0;">📚 Guida Comandi HTML</h2>
             <p>Sintassi ed esempi pratici dei comandi usati:</p>
             
             <div class="concept-block">
                 <span class="concept-title">&lt;div&gt; (Division)</span>
-                <p>Un contenitore generico ("scatola"). Usato per creare le schede (Cards) e raggruppare elementi logici.</p>
+                <p>Un contenitore generico ("scatola"). Usato per creare le schede (Cards).</p>
                 <div class="code-snippet">
-&lt;div class="card"&gt;<br>
-  Contenuto dell'aforisma...<br>
-&lt;/div&gt;
+&lt;div class="card"&gt; Contenuto... &lt;/div&gt;
                 </div>
             </div>
 
             <div class="concept-block">
                 <span class="concept-title">&lt;span&gt;</span>
-                <p>Contenitore per testi brevi o parole singole sulla stessa riga. Usato qui per colorare le categorie o nascondere la traduzione.</p>
+                <p>Contenitore per testi brevi sulla stessa riga (es. categoria).</p>
                 <div class="code-snippet">
-&lt;span class="source-tag"&gt;De Profundis&lt;/span&gt;
+&lt;span class="source"&gt;De Profundis&lt;/span&gt;
                 </div>
             </div>
 
             <div class="concept-block">
                 <span class="concept-title">&lt;input&gt;</span>
-                <p>Campo di inserimento dati. È la nostra Barra di Ricerca. L'attributo <code>placeholder</code> mostra il testo di suggerimento grigio.</p>
+                <p>Campo di inserimento dati (Barra di Ricerca).</p>
                 <div class="code-snippet">
-&lt;input type="text" placeholder="Scrivi qui..."&gt;
+&lt;input type="text" placeholder="Cerca..."&gt;
                 </div>
             </div>
 
             <div class="concept-block">
                 <span class="concept-title">&lt;button&gt;</span>
-                <p>Pulsante cliccabile. Usa l'attributo <code>onclick</code> per lanciare comandi JavaScript (come l'audio).</p>
+                <p>Pulsante cliccabile che lancia un'azione (Audio).</p>
                 <div class="code-snippet">
-&lt;button onclick="speak('Hello')"&gt;🔊 Ascolta&lt;/button&gt;
+&lt;button onclick="speak()"&gt;🔊&lt;/button&gt;
                 </div>
             </div>
 
             <div class="concept-block">
-                <span class="concept-title">id="..." (Identificatore Univoco)</span>
-                <p>Un nome unico dato a un elemento per trovarlo col JavaScript. Non possono esserci due ID uguali nella pagina.</p>
+                <span class="concept-title">id="..." (Identificatore)</span>
+                <p>Nome univoco per trovare un elemento col JS.</p>
                 <div class="code-snippet">
-&lt;div id="app-root"&gt; ... &lt;/div&gt;<br>
-// In JS lo trovo con: document.getElementById('app-root')
+&lt;div id="app-root"&gt; ... &lt;/div&gt;
                 </div>
             </div>
 
             <div class="concept-block">
                 <span class="concept-title">class="..." (Classe)</span>
-                <p>Un nome di gruppo per dare lo stesso stile grafico (CSS) a molti elementi diversi contemporaneamente.</p>
+                <p>Nome di gruppo per dare lo stesso stile grafico a più elementi.</p>
                 <div class="code-snippet">
-&lt;div class="card"&gt;...&lt;/div&gt;<br>
-&lt;div class="card"&gt;...&lt;/div&gt;<br>
-// Tutte le div con class="card" avranno lo stesso aspetto.
+&lt;div class="card"&gt;...&lt;/div&gt;
                 </div>
             </div>
 
             <div class="concept-block">
                 <span class="concept-title">&lt;script&gt;</span>
-                <p>Il "cervello". Collega il file HTML al file <code>database.js</code> permettendo la logica.</p>
+                <p>Il "cervello". Collega il file HTML alla logica JS.</p>
                 <div class="code-snippet">
 &lt;script src="database.js"&gt;&lt;/script&gt;
                 </div>
