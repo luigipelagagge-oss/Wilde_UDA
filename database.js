@@ -1,9 +1,16 @@
 /* ================================================================
-   FILE: database.js
-   LOGICA DI SISTEMA E GESTIONE DATI
+    PROGETTO: Wilde UDA (Inglese + Sistemi)
+    FILE: database.js
+    
+    DESCRIZIONE: Questo file è il BACKEND simulato.
+    Non tocca la grafica, ma gestisce i dati e la logica.
    ================================================================ */
 
-/* --- 1. IL DATABASE DEGLI AFORISMI --- */
+
+/* [SEZIONE 1: IL DATABASE]
+    Array di Oggetti JSON. Simula la risposta di un server.
+    Ogni graffa {} è un record.
+*/
 const aforismiDatabase = [
     {
         id: 1,
@@ -31,19 +38,30 @@ const aforismiDatabase = [
     }
 ];
 
-/* --- 2. MOTORE DI RENDERING (COSTRUTTORE DI PAGINA) --- */
+
+/* [SEZIONE 2: MOTORE DI RENDERING]
+    Funzione: renderApp(data)
+    Scopo: Manipolazione DOM. Prende i dati e costruisce l'HTML.
+*/
 function renderApp(dataToRender) {
+    // 1. Troviamo il contenitore "app-root" nell'HTML
     const root = document.getElementById('app-root');
+    
+    // 2. Puliamo il contenitore (Reset)
     root.innerHTML = ''; 
 
+    // 3. Gestione errore "Nessun risultato"
     if (dataToRender.length === 0) {
         root.innerHTML = '<p style="text-align:center; color:#999;">Nessun risultato trovato.</p>';
         return;
     }
 
+    // 4. Ciclo (Loop): Per ogni aforisma, creiamo una Card
     dataToRender.forEach(item => {
         const card = document.createElement('div');
-        card.className = 'card';
+        card.className = 'card'; // Assegniamo la classe per il CSS
+        
+        // Inseriamo l'HTML dinamico (Template Literal)
         card.innerHTML = `
             <span class="source-tag">${item.source}</span>
             <div class="english-row">
@@ -59,50 +77,68 @@ function renderApp(dataToRender) {
                 ${item.grammarRule}
             </div>
         `;
+        
+        // Appendiamo la card al contenitore principale
         root.appendChild(card);
     });
 }
 
-/* --- 3. MOTORE DI RICERCA (LISTENER) --- */
+
+/* [SEZIONE 3: GESTIONE EVENTI (RICERCA)]
+    Event Listener che ascolta la tastiera.
+*/
 const searchInput = document.getElementById('searchBar');
 
 searchInput.addEventListener('keyup', (e) => {
+    // 1. Leggi cosa ha scritto l'utente
     const searchString = e.target.value.toLowerCase();
+    
+    // 2. Filtra l'array del database
     const filteredData = aforismiDatabase.filter(item => {
         return item.text.toLowerCase().includes(searchString) || 
                item.translation.toLowerCase().includes(searchString);
     });
+
+    // 3. Ridisegna l'app con i nuovi dati filtrati
     renderApp(filteredData);
 });
 
-/* --- 4. FUNZIONE AUDIO --- */
+
+/* [SEZIONE 4: API AUDIO]
+    Funzione per la sintesi vocale.
+*/
 function speak(text) {
-    window.speechSynthesis.cancel();
+    window.speechSynthesis.cancel(); // Ferma eventuali audio precedenti
     const utterance = new SpeechSynthesisUtterance(text);
-    utterance.lang = 'en-GB';
-    utterance.rate = 0.8;
+    utterance.lang = 'en-GB'; // Inglese Britannico
+    utterance.rate = 0.8;     // Velocità ridotta
     window.speechSynthesis.speak(utterance);
 }
 
-/* --- 5. GESTIONE MANUALI (MODALI MULTIPLI) --- */
 
-// Funzione per APRIRE un modale specifico (passando il suo ID)
+/* [SEZIONE 5: GESTIONE MODALI (MANUALI)]
+    Logica per aprire/chiudere le finestre di aiuto.
+*/
+
+// Apre il modale specifico passato come parametro (id)
 function openModal(modalId) {
     document.getElementById(modalId).style.display = 'flex';
 }
 
-// Funzione per CHIUDERE un modale specifico
+// Chiude il modale specifico
 function closeModal(modalId) {
     document.getElementById(modalId).style.display = 'none';
 }
 
-// Chiusura globale cliccando fuori
+// Chiude qualsiasi modale se clicco fuori (sullo sfondo scuro)
 window.onclick = function(event) {
-    // Controlliamo se l'elemento cliccato ha la classe 'modal-overlay'
     if (event.target.classList.contains('modal-overlay')) {
         event.target.style.display = 'none';
     }
 }
 
-/* --- 6. AVVIO --- */
+
+/* [SEZIONE 6: AVVIO]
+    Lancia l'applicazione al caricamento pagina.
+*/
 renderApp(aforismiDatabase);
